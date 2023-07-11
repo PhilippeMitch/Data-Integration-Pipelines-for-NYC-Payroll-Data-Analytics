@@ -1,0 +1,9 @@
+{
+	"name": "nycpayrol",
+	"location": "eastus",
+	"identity": {
+		"type": "SystemAssigned",
+		"principalId": "da56d00e-d055-4d11-97f0-6a01d1e4186c",
+		"tenantId": "f62bc628-c6f6-4055-aaa3-c6fa8a1c820b"
+	}
+}

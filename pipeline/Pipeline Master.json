@@ -1,0 +1,103 @@
+{
+	"name": "Pipeline Master",
+	"properties": {
+		"activities": [
+			{
+				"name": "Pipeline Employee Data To Synapse",
+				"type": "ExecutePipeline",
+				"dependsOn": [],
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "Pipeline Employee Data To Synapse",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true
+				}
+			},
+			{
+				"name": "pl_load_PayrollDataSQLDB",
+				"type": "ExecutePipeline",
+				"dependsOn": [
+					{
+						"activity": "Pipeline Employee Data To Synapse",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "pl_load_PayrollDataSQLDB",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true
+				}
+			},
+			{
+				"name": "Pipeline Load Agency Master to synapse",
+				"type": "ExecutePipeline",
+				"dependsOn": [
+					{
+						"activity": "pl_load_PayrollDataSQLDB",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "Pipeline Load Agency Master to synapse",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true
+				}
+			},
+			{
+				"name": "Pipeline Load Current Year data From SQL to Synapse",
+				"type": "ExecutePipeline",
+				"dependsOn": [
+					{
+						"activity": "Pipeline Load Agency Master to synapse",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "Pipeline Load Current Year data From SQL to Synapse",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true
+				}
+			},
+			{
+				"name": "Pipeline Load Title Master to Synapse",
+				"type": "ExecutePipeline",
+				"dependsOn": [
+					{
+						"activity": "Pipeline Load Current Year data From SQL to Synapse",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "Pipeline Load Title Master to Synapse",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true
+				}
+			}
+		],
+		"annotations": [],
+		"lastPublishTime": "2023-07-09T15:46:11Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

@@ -1,0 +1,57 @@
+{
+	"name": "Employee data to Synapse",
+	"properties": {
+		"folder": {
+			"name": "Azure Data Storage Gen2 to Synapse"
+		},
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "EmpMaster_ds",
+						"type": "DatasetReference"
+					},
+					"name": "Employeds"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "NYC_Payroll_EMP_MD",
+						"type": "DatasetReference"
+					},
+					"name": "NYCPayrollEMPMD"
+				}
+			],
+			"transformations": [],
+			"scriptLines": [
+				"source(output(",
+				"          EmployeeID as string,",
+				"          LastName as string,",
+				"          FirstName as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false) ~> Employeds",
+				"Employeds sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     input(",
+				"          EmployeeID as string,",
+				"          LastName as string,",
+				"          FirstName as string",
+				"     ),",
+				"     deletable:false,",
+				"     insertable:true,",
+				"     updateable:false,",
+				"     upsertable:false,",
+				"     format: 'table',",
+				"     staged: true,",
+				"     allowCopyCommand: true,",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     errorHandlingOption: 'stopOnFirstError') ~> NYCPayrollEMPMD"
+			]
+		}
+	}
+}
